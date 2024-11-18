@@ -1,0 +1,116 @@
+{
+  "_note1": "KEEP THIS FILE! Check it into a version control system (VCS) like git.",
+  "_note2": "ObjectBox manages crucial IDs for your object model. See docs for details.",
+  "_note3": "If you have VCS merge conflicts, you must resolve them according to ObjectBox docs.",
+  "entities": [
+    {
+      "id": "1:6674928056527261676",
+      "lastPropertyId": "11:1114503438362001676",
+      "name": "Person",
+      "properties": [
+        {
+          "id": "1:494067606271025685",
+          "name": "id",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:3794756793509335736",
+          "name": "mongoId",
+          "type": 9
+        },
+        {
+          "id": "3:2733133401092111247",
+          "name": "dni",
+          "type": 9
+        },
+        {
+          "id": "4:6289705311291086244",
+          "name": "pasaporte",
+          "type": 9
+        },
+        {
+          "id": "5:6296259698047671743",
+          "name": "celular",
+          "type": 9
+        },
+        {
+          "id": "6:6255555542293659754",
+          "name": "usuario",
+          "type": 9
+        },
+        {
+          "id": "7:8115618835884056272",
+          "name": "password",
+          "type": 9
+        },
+        {
+          "id": "8:8775970976788908647",
+          "name": "lugarVista",
+          "type": 30
+        },
+        {
+          "id": "9:6062379925733111011",
+          "name": "motivos",
+          "type": 30
+        },
+        {
+          "id": "10:7290342971168488219",
+          "name": "updatedAt",
+          "type": 10
+        },
+        {
+          "id": "11:1114503438362001676",
+          "name": "syncPending",
+          "type": 1
+        }
+      ],
+      "relations": []
+    },
+    {
+      "id": "2:4612990205913745725",
+      "lastPropertyId": "5:4324325992541449761",
+      "name": "Visita",
+      "properties": [
+        {
+          "id": "1:4051389909940324776",
+          "name": "ide",
+          "type": 6,
+          "flags": 1
+        },
+        {
+          "id": "2:2819719447479312635",
+          "name": "mongoId",
+          "type": 9
+        },
+        {
+          "id": "3:6316002444966545678",
+          "name": "nombreLugar",
+          "type": 9
+        },
+        {
+          "id": "4:6646447735557231208",
+          "name": "fechaVisita",
+          "type": 10
+        },
+        {
+          "id": "5:4324325992541449761",
+          "name": "syncPending",
+          "type": 1
+        }
+      ],
+      "relations": []
+    }
+  ],
+  "lastEntityId": "2:4612990205913745725",
+  "lastIndexId": "0:0",
+  "lastRelationId": "0:0",
+  "lastSequenceId": "0:0",
+  "modelVersion": 5,
+  "modelVersionParserMinimum": 5,
+  "retiredEntityUids": [],
+  "retiredIndexUids": [],
+  "retiredPropertyUids": [],
+  "retiredRelationUids": [],
+  "version": 1
+}
