@@ -15,7 +15,7 @@ class Perfilturista extends StatefulWidget {
 }
 
 class _PerfilturistaState extends State<Perfilturista> {
-  var height, width;
+  late double height, width;
 
   String selectedCountry = "";
   String selectedState = "";
@@ -137,8 +137,6 @@ class _PerfilturistaState extends State<Perfilturista> {
   Widget build(BuildContext context) {
     height = MediaQuery.of(context).size.height;
     width = MediaQuery.of(context).size.width;
-    bool isPortrait =
-        MediaQuery.of(context).orientation == Orientation.portrait;
 
     return Scaffold(
       appBar: AppBar(
@@ -149,7 +147,7 @@ class _PerfilturistaState extends State<Perfilturista> {
           'COMPLETE Y SELECCIONE',
           style: TextStyle(
             color: Colors.white,
-            fontSize: width * 0.05,
+            fontSize: width * 0.045,
             fontWeight: FontWeight.bold,
           ),
         ),
@@ -158,65 +156,65 @@ class _PerfilturistaState extends State<Perfilturista> {
         color: Colors.indigo,
         child: Column(
           children: [
-            Flexible(
-              child: Padding(
-                padding: EdgeInsets.symmetric(horizontal: width * 0.05),
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      '¿De qué lugar nos visita?',
-                      style: TextStyle(
-                        fontSize: width * 0.045,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
+            Padding(
+              padding: EdgeInsets.symmetric(horizontal: width * 0.05),
+              child: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  SizedBox(height: height * 0.02),
+                  Text(
+                    '¿De qué lugar nos visita?',
+                    style: TextStyle(
+                      fontSize: width * 0.045,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
                     ),
-                    SizedBox(height: height * 0.02),
-                    CSCPicker(
-                      showStates: true,
-                      showCities: true,
-                      flagState: CountryFlag.SHOW_IN_DROP_DOWN_ONLY,
-                      dropdownDecoration: BoxDecoration(
-                        borderRadius: BorderRadius.all(Radius.circular(10)),
-                        color: Colors.white,
-                        border: Border.all(color: Colors.grey),
-                      ),
-                      countryDropdownLabel: "País",
-                      stateDropdownLabel: "Departamento",
-                      cityDropdownLabel: "Provincia",
-                      selectedItemStyle: TextStyle(
-                        color: Colors.black,
-                        fontSize: 14,
-                      ),
-                      onCountryChanged: (value) {
-                        setState(() {
-                          selectedCountry = value;
-                        });
-                      },
-                      onStateChanged: (value) {
-                        setState(() {
-                          selectedState = value ?? "";
-                        });
-                      },
-                      onCityChanged: (value) {
-                        setState(() {
-                          selectedCity = value ?? "";
-                        });
-                      },
-                      defaultCountry: CscCountry.Peru,
+                  ),
+                  SizedBox(height: height * 0.02),
+                  CSCPicker(
+                    showStates: true,
+                    showCities: true,
+                    flagState: CountryFlag.SHOW_IN_DROP_DOWN_ONLY,
+                    dropdownDecoration: BoxDecoration(
+                      borderRadius: BorderRadius.all(Radius.circular(10)),
+                      color: Colors.white,
+                      border: Border.all(color: Colors.grey),
                     ),
-                    SizedBox(height: height * 0.02),
-                    Text(
-                      '¿Por qué motivo haces turismo?',
-                      style: TextStyle(
-                        fontSize: width * 0.045,
-                        color: Colors.white,
-                        fontWeight: FontWeight.w500,
-                      ),
+                    countryDropdownLabel: "País",
+                    stateDropdownLabel: "Departamento",
+                    cityDropdownLabel: "Provincia",
+                    selectedItemStyle: TextStyle(
+                      color: Colors.black,
+                      fontSize: 14,
                     ),
-                  ],
-                ),
+                    onCountryChanged: (value) {
+                      setState(() {
+                        selectedCountry = value;
+                      });
+                    },
+                    onStateChanged: (value) {
+                      setState(() {
+                        selectedState = value ?? "";
+                      });
+                    },
+                    onCityChanged: (value) {
+                      setState(() {
+                        selectedCity = value ?? "";
+                      });
+                    },
+                    defaultCountry: CscCountry.Peru,
+                  ),
+                  SizedBox(height: height * 0.02),
+                  Text(
+                    '¿Por qué motivo haces turismo?',
+                    style: TextStyle(
+                      fontSize: width * 0.045,
+                      color: Colors.white,
+                      fontWeight: FontWeight.w500,
+                    ),
+                  ),
+                  SizedBox(height: height * 0.02),
+                ],
               ),
             ),
             Expanded(
@@ -228,11 +226,11 @@ class _PerfilturistaState extends State<Perfilturista> {
                     topRight: Radius.circular(30),
                   ),
                 ),
-                padding: EdgeInsets.only(bottom: 80),
+                padding: EdgeInsets.only(top: 20),
                 child: GridView.builder(
-                  padding: EdgeInsets.all(width * 0.05),
+                  padding: EdgeInsets.all(width * 0.04),
                   gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: (width / 200).floor(),
+                    crossAxisCount: (width / 180).floor(),
                     crossAxisSpacing: width * 0.03,
                     mainAxisSpacing: width * 0.03,
                     childAspectRatio: 1,
@@ -243,20 +241,20 @@ class _PerfilturistaState extends State<Perfilturista> {
                       onTap: () {
                         toggleSelection(index);
                       },
-                      child: Container(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: Colors.black26,
-                              spreadRadius: 1,
-                              blurRadius: 6,
-                            )
-                          ],
-                        ),
-                        child: Stack(
-                          children: [
-                            ClipRRect(
+                      child: Stack(
+                        children: [
+                          Container(
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(20),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: Colors.black26,
+                                  spreadRadius: 1,
+                                  blurRadius: 6,
+                                )
+                              ],
+                            ),
+                            child: ClipRRect(
                               borderRadius: BorderRadius.circular(20),
                               child: Image.asset(
                                 imgData[index],
@@ -265,39 +263,39 @@ class _PerfilturistaState extends State<Perfilturista> {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            if (selected[index])
-                              Container(
-                                decoration: BoxDecoration(
-                                  borderRadius: BorderRadius.circular(20),
-                                  color: Colors.red.withOpacity(0.5),
+                          ),
+                          if (selected[index])
+                            Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(20),
+                                color: Colors.red.withOpacity(0.5),
+                              ),
+                            ),
+                          Positioned(
+                            bottom: 0,
+                            left: 0,
+                            right: 0,
+                            child: Container(
+                              padding: EdgeInsets.symmetric(vertical: 5.0),
+                              decoration: BoxDecoration(
+                                color: Colors.black.withOpacity(0.5),
+                                borderRadius: BorderRadius.only(
+                                  bottomLeft: Radius.circular(20),
+                                  bottomRight: Radius.circular(20),
                                 ),
                               ),
-                            Positioned(
-                              bottom: 0,
-                              left: 0,
-                              right: 0,
-                              child: Container(
-                                padding: EdgeInsets.symmetric(vertical: 5.0),
-                                decoration: BoxDecoration(
-                                  color: Colors.black.withOpacity(0.5),
-                                  borderRadius: BorderRadius.only(
-                                    bottomLeft: Radius.circular(20),
-                                    bottomRight: Radius.circular(20),
-                                  ),
-                                ),
-                                child: Text(
-                                  titles[index],
-                                  textAlign: TextAlign.center,
-                                  style: TextStyle(
-                                    fontSize: width * 0.04,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w500,
-                                  ),
+                              child: Text(
+                                titles[index],
+                                textAlign: TextAlign.center,
+                                style: TextStyle(
+                                  fontSize: width * 0.04,
+                                  color: Colors.white,
+                                  fontWeight: FontWeight.w500,
                                 ),
                               ),
                             ),
-                          ],
-                        ),
+                          ),
+                        ],
                       ),
                     );
                   },

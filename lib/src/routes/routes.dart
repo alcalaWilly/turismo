@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:turismo/src/pages/home/explore/categorias/lugaresCategorias/manifestacionesCulturales/lugaresManifestaciones/capilla.dart';
+import 'package:turismo/src/pages/home/explore/categorias/lugaresCategorias/manifestacionesCulturales/lugaresManifestaciones/parque.dart';
+import 'package:turismo/src/pages/home/explore/categorias/lugaresCategorias/manifestacionesCulturales/mapaManifestaciones/mapaCapilla.dart';
+import 'package:turismo/src/pages/home/explore/categorias/lugaresCategorias/manifestacionesCulturales/mapaManifestaciones/mapaParque.dart';
 import 'package:turismo/src/pages/home/visitas/Visitados.dart';
 import 'package:turismo/src/pages/home/explore/categorias/aprogramado.dart';
 import 'package:turismo/src/pages/home/explore/categorias/lugaresCategorias/sitiosNaturales/lugaresNaturales/CavernaNuevaItalia.dart';
@@ -124,6 +128,21 @@ Map<String, WidgetBuilder> rutas = {
         lugar: ModalRoute.of(context)!.settings.arguments as Lugar,
       ),
   'Mapacavernanuevaitalia': (context) => Mapacavernanuevaitalia(
+        lugar: ModalRoute.of(context)!.settings.arguments as Lugar,
+      ),
+
+  /////////////////////////////////MANIFESTACIONES:
+  'Parque': (context) => Parque(
+        lugar: ModalRoute.of(context)!.settings.arguments as Lugar,
+      ),
+  'Capilla': (context) => Capilla(
+        lugar: ModalRoute.of(context)!.settings.arguments as Lugar,
+      ),
+  ///////////////////////////////MAPA
+  'MapaParque': (context) => MapaParque(
+        lugar: ModalRoute.of(context)!.settings.arguments as Lugar,
+      ),
+  'Mapacapilla': (context) => Mapacapilla(
         lugar: ModalRoute.of(context)!.settings.arguments as Lugar,
       ),
 };

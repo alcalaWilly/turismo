@@ -26,8 +26,8 @@ class _PrincipalState extends State<Principal> {
     Naturales(categoria: categoriaData[0]),
     Manifestaciones(categoria: categoriaData[1]),
     Floclore(categoria: categoriaData[2]),
-    Aprogramado(categoria: categoriaData[3]),
-    Rtecnicas(categoria: categoriaData[4]),
+    // Aprogramado(categoria: categoriaData[3]),
+    // Rtecnicas(categoria: categoriaData[4]),
   ];
 
   @override

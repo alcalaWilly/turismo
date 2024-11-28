@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:turismo/src/pages/home/explore/categorias/lugaresCategorias/manifestacionesCulturales/lugaresManifestaciones/capilla.dart';
+import 'package:turismo/src/pages/home/explore/categorias/lugaresCategorias/manifestacionesCulturales/lugaresManifestaciones/parque.dart';
 import 'package:turismo/src/pages/home/modules/categoriaModel/categorias.dart';
 import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 
@@ -33,34 +35,34 @@ class _ManifestacionesState extends State<Manifestaciones> {
         final PageController pageController = PageController();
         int currentPage = 0;
         return GestureDetector(
-//           onTap: () {
-//             // Navegar a la página correspondiente según el lugar seleccionado
-//             if (lugar.nombre == 'Catarata Tsomontonari') {
-//               Navigator.push(
-//                 context,
-//                 MaterialPageRoute(
-//                   builder: (context) => Tsomontonari(lugar: lugar),
-//                 ),
-//               );
-//             } else if (lugar.nombre == 'Cueva Vanhellsing') {
-//               Navigator.push(
-//                 context,
-//                 MaterialPageRoute(
-//                   builder: (context) => Cuevavanhellsing(
-//                       lugar: lugar), // Cambia a la clase correcta para la cueva
-//                 ),
-//               );
-// ////////////////////////////////////////////////////////////////////////////////////////////////////////////
-//             } else {
-//               // Puedes agregar más condiciones aquí para otros lugares o usar una lógica más dinámica
-//               //Navigator.push(
-//               //context
-//               //MaterialPageRoute(
-//               //builder: (context) => LugarDefault(lugar: lugar), // Una pantalla por defecto si no hay un caso específico
-//               //),
-//               //);
-//             }
-//           },
+          onTap: () {
+            // Navegar a la página correspondiente según el lugar seleccionado
+            if (lugar.nombre == 'Parque de la interculturalidad') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Parque(lugar: lugar),
+                ),
+              );
+            } else if (lugar.nombre == 'Capilla "San Miguel Arcangel"') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => Capilla(
+                      lugar: lugar), // Cambia a la clase correcta para la cueva
+                ),
+              );
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+            } else {
+              // Puedes agregar más condiciones aquí para otros lugares o usar una lógica más dinámica
+              //Navigator.push(
+              //context
+              //MaterialPageRoute(
+              //builder: (context) => LugarDefault(lugar: lugar), // Una pantalla por defecto si no hay un caso específico
+              //),
+              //);
+            }
+          },
           child: Container(
             margin: EdgeInsets.only(bottom: 20.0),
             height: 420,

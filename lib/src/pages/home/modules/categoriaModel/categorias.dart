@@ -716,26 +716,28 @@ List<Categorias> categoriaData = [
     // icon: 'assets/iconos/manifestacion.webp',
     lugares: [
       Lugar(
-        nombre: 'Plaza De La Interculturalidad De Rio Negro',
+        nombre: 'Parque de la interculturalidad',
         imagenes: [
           'assets/rioNegro/PLAZA_INTERCULTURAL/plaza1.webp',
           'assets/rioNegro/PLAZA_INTERCULTURAL/plaza2.webp',
         ],
         //imagen: 'assets/image/lugares/rioNegro.jpeg',
-        descripcion: 'Museo que narra la historia local.',
-        tiempoEstimado: '3 horas',
+        descripcion:
+            'Se extiende en un área de los 10,005 m2, posee zona Wi-fi gratis y consta de una glorieta principal representada por una corona asháninka y un sombrero andin; además el arco y la flecha que simboliza la fuerza guerrera de los aborígenes, máxima expresión con un enfoque intercultural. Su remodelación se hizo en enero de año 2008, sintetizando al avance de la modernidad de los pisos en cerámica, sólidad bancas, fuentes, saltos y caidas de agua como una réplica de las cataratas de Tsomontonari en forma de cortinas y luces multicolores.',
+        tiempoEstimado: 'Misma Plaza',
         region:
             LatLngBounds(LatLng(-11.009, -74.675), LatLng(-11.209, -74.659)),
         polyline: [LatLng(-11.209, -74.659), LatLng(-11.201, -74.665)],
       ),
       Lugar(
-        nombre: 'Iglesia',
+        nombre: 'Capilla "San Miguel Arcangel"',
         imagenes: [
           'assets/rioNegro/IGLESIA/iglesia.webp',
         ],
         //imagen: 'assets/rioNegro/IGLESIA/iglesia.JPG',
-        descripcion: 'Museo que narra la historia local.',
-        tiempoEstimado: '3 horas',
+        descripcion:
+            'En 1951, llegó el Santo Patrón "San Miguel Arcángel" que hoy es el guardián protector de la comunidad cristiana católica. La fiesta patronal se celebra el 29 de setiembre de cada año compartiendo la algarabía y alegría con un sentido más profundo de la fe católica. Actualmente, está acardo del Consejo Pastoral de la Capilla "San Miguel Arcángel" de la Parroquia San Francisco de Asis, por orden del Vicariato Apostólico de San Ramón.',
+        tiempoEstimado: 'Misma Plaza',
         region:
             LatLngBounds(LatLng(-11.009, -74.675), LatLng(-11.209, -74.659)),
         polyline: [LatLng(-11.209, -74.659), LatLng(-11.201, -74.665)],
@@ -764,48 +766,49 @@ List<Categorias> categoriaData = [
       ),
     ],
   ),
-  Categorias(
-    name: 'Festival   ',
-    icon: Icons.festival,
-    // icon: 'assets/iconos/festival.webp',
-    lugares: [
-      Lugar(
-        nombre: 'Festival Del Pescado',
-        imagenes: [
-          'assets/rioNegro/TSOMONTONARI/tsomontonari1.webp',
-          'assets/rioNegro/TSOMONTONARI/tsomontonari2.webp',
-          'assets/rioNegro/TSOMONTONARI/tsomontonari3.webp',
-        ],
-        //imagen: 'ruta/a/imagenC.png',
-        descripcion: 'Museo que narra la historia local.',
-        tiempoEstimado: '3 horas',
-        region:
-            LatLngBounds(LatLng(-11.009, -74.675), LatLng(-11.209, -74.659)),
-        polyline: [LatLng(-11.209, -74.659), LatLng(-11.201, -74.665)],
-      ),
-    ],
-  ),
-  Categorias(
-    name: 'Emprendimiento   ',
-    // icon: FontAwesomeIcons.mountain,
-    icon: Icons.real_estate_agent_rounded,
-    // icon: 'assets/iconos/emprendimiento.webp',
-    lugares: [
-      Lugar(
-        nombre: 'Café Misha-Fundo Santa Luzmila',
-        imagenes: [
-          'assets/rioNegro/TSOMONTONARI/tsomontonari1.webp',
-          'assets/rioNegro/TSOMONTONARI/tsomontonari2.webp',
-          'assets/rioNegro/TSOMONTONARI/tsomontonari3.webp',
-        ],
-        //imagen: 'ruta/a/imagenC.png',
-        descripcion: 'Museo que narra la historia local.',
-        tiempoEstimado: '3 horas',
-        region:
-            LatLngBounds(LatLng(-11.009, -74.675), LatLng(-11.209, -74.659)),
-        polyline: [LatLng(-11.209, -74.659), LatLng(-11.201, -74.665)],
-      ),
-    ],
-  ),
+  // Categorias(
+  //   name: 'Festival   ',
+  //   icon: Icons.festival,
+  //   // icon: 'assets/iconos/festival.webp',
+  //   lugares: [
+  //     Lugar(
+  //       nombre: 'Festival Del Pescado',
+  //       imagenes: [
+  //         'assets/rioNegro/TSOMONTONARI/tsomontonari1.webp',
+  //         'assets/rioNegro/TSOMONTONARI/tsomontonari2.webp',
+  //         'assets/rioNegro/TSOMONTONARI/tsomontonari3.webp',
+  //       ],
+  //       //imagen: 'ruta/a/imagenC.png',
+  //       descripcion: 'Museo que narra la historia local.',
+  //       tiempoEstimado: '3 horas',
+  //       region:
+  //           LatLngBounds(LatLng(-11.009, -74.675), LatLng(-11.209, -74.659)),
+  //       polyline: [LatLng(-11.209, -74.659), LatLng(-11.201, -74.665)],
+  //     ),
+  //   ],
+  // ),
+  // Categorias(
+  //   name: 'Emprendimiento   ',
+  //   // icon: FontAwesomeIcons.mountain,
+  //   icon: Icons.real_estate_agent_rounded,
+  //   // icon: 'assets/iconos/emprendimiento.webp',
+  //   lugares: [
+  //     Lugar(
+  //       nombre: 'Café Misha-Fundo Santa Luzmila',
+  //       imagenes: [
+  //         'assets/rioNegro/TSOMONTONARI/tsomontonari1.webp',
+  //         'assets/rioNegro/TSOMONTONARI/tsomontonari2.webp',
+  //         'assets/rioNegro/TSOMONTONARI/tsomontonari3.webp',
+  //       ],
+  //       //imagen: 'ruta/a/imagenC.png',
+  //       descripcion: 'Museo que narra la historia local.',
+  //       tiempoEstimado: '3 horas',
+  //       region:
+  //           LatLngBounds(LatLng(-11.009, -74.675), LatLng(-11.209, -74.659)),
+  //       polyline: [LatLng(-11.209, -74.659), LatLng(-11.201, -74.665)],
+  //     ),
+  //   ],
+  // ),
+
   ////////////////////////////////////////
 ];
