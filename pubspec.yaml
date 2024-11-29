@@ -116,6 +116,7 @@ flutter:
     - assets/video/
     - assets/iconos/
     - assets/iconos/contactos/
+    - assets/rioNegro/YAVIRIRONI/
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
 
