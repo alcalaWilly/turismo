@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:turismo/src/pages/home/modules/categoriaModel/categorias.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:turismo/src/pages/home/modules/mapas/descargarMapa.dart';
-import 'package:turismo/src/pages/home/modules/mapas/ubicación.dart';
+import 'package:turismo/src/pages/home/modules/mapas/ubicacion.dart';
 
 class Mapatsomontonari extends StatefulWidget {
   final Lugar lugar;
@@ -21,6 +21,7 @@ class Mapatsomontonari extends StatefulWidget {
 class _MapatsomontonariState extends State<Mapatsomontonari> {
   bool _isDownloading = false;
   bool _isDownloaded = false;
+  bool _isFetchingLocation = false; // Nuevo estado para buscar ubicación
   double _downloadProgress = 0.0;
   LatLng? _currentLocation;
   Marker? _currentLocationMarker;
@@ -69,18 +70,32 @@ class _MapatsomontonariState extends State<Mapatsomontonari> {
   }
 
   Future<void> _getCurrentLocation() async {
-    final location = await _locationService.getCurrentLocation();
-    if (location != null) {
+    setState(() {
+      _isFetchingLocation = true; // Mostrar diálogo de cargando
+    });
+
+    try {
+      final location = await _locationService.getCurrentLocation();
+      if (location != null) {
+        setState(() {
+          _currentLocation = location;
+          _currentLocationMarker = Marker(
+            width: 80.0,
+            height: 80.0,
+            point: _currentLocation!,
+            child: Icon(Icons.person_pin_circle, color: Colors.blue, size: 40),
+          );
+        });
+        _mapController.move(_currentLocation!, 15.0);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('No se pudo obtener la ubicación: $e')),
+      );
+    } finally {
       setState(() {
-        _currentLocation = location;
-        _currentLocationMarker = Marker(
-          width: 80.0,
-          height: 80.0,
-          point: _currentLocation!,
-          child: Icon(Icons.person_pin_circle, color: Colors.blue, size: 40),
-        );
+        _isFetchingLocation = false; // Ocultar diálogo de cargando
       });
-      _mapController.move(_currentLocation!, 15.0);
     }
   }
 
@@ -165,7 +180,7 @@ class _MapatsomontonariState extends State<Mapatsomontonari> {
                     Polyline(
                       points: widget.lugar.polyline,
                       color: Colors.blue,
-                      strokeWidth: 10.0,
+                      strokeWidth: 7.0,
                     ),
                   ],
                 ),
@@ -197,6 +212,18 @@ class _MapatsomontonariState extends State<Mapatsomontonari> {
               tooltip: 'Mi Ubicación',
             ),
           ),
+          if (_isFetchingLocation)
+            Center(
+              child: AlertDialog(
+                content: Row(
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(width: 15),
+                    Text('Buscando su ubicación...'),
+                  ],
+                ),
+              ),
+            ),
           Align(
             alignment: Alignment.bottomLeft,
             child: Padding(

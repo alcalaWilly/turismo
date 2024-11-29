@@ -4,6 +4,8 @@ import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:turismo/src/pages/home/modules/categoriaModel/categorias.dart';
+import 'package:turismo/src/pages/home/modules/mapas/descargarMapa.dart';
+import 'package:turismo/src/pages/home/modules/mapas/ubicaci%C3%B3n.dart';
 
 class Mapacatarataambitarini extends StatefulWidget {
   final Lugar lugar; // Recibe el lugar seleccionado
@@ -18,67 +20,116 @@ class Mapacatarataambitarini extends StatefulWidget {
 class _MapacatarataambitariniState extends State<Mapacatarataambitarini> {
   bool _isDownloading = false;
   bool _isDownloaded = false;
-  late final Stream<DownloadProgress> _progressStream;
+  bool _isFetchingLocation = false; // Nuevo estado para buscar ubicación
+  double _downloadProgress = 0.0;
+  LatLng? _currentLocation;
+  Marker? _currentLocationMarker;
+
   final MapController _mapController = MapController();
+  late MapDownloadManager _mapDownloadManager;
+  late LocationService _locationService;
 
   @override
   void initState() {
     super.initState();
-    _checkAndDownloadMap(widget.lugar);
+    _mapDownloadManager = MapDownloadManager(widget.lugar);
+    _locationService = LocationService();
+    _checkIfMapDownloaded();
   }
 
-  void _checkAndDownloadMap(Lugar lugar) async {
-    final store = FMTCStore(
-        lugar.nombre); // Usar el nombre del lugar como identificador único
-    final mgmt = store.manage;
+  void _checkIfMapDownloaded() async {
+    bool isDownloaded = await _mapDownloadManager.isMapDownloaded();
+    setState(() {
+      _isDownloaded = isDownloaded;
+    });
 
-    if (!(await mgmt.ready)) {
-      await mgmt.create();
-    }
-
-    bool tilesCached = await mgmt.ready;
-
-    if (!tilesCached) {
-      _startDownloadForLugar(lugar);
-    } else {
-      setState(() {
-        _isDownloaded = true;
-      });
+    if (!isDownloaded) {
+      Future.delayed(Duration.zero, _showDownloadDialog);
     }
   }
 
-  void _startDownloadForLugar(Lugar lugar) {
-    final region = RectangleRegion(lugar.region);
-    final downloadableRegion = region.toDownloadable(
-      minZoom: 1,
-      maxZoom: 18,
-      options: TileLayer(
-        urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-        userAgentPackageName: 'com.example.app',
-        tileProvider: FMTCStore(lugar.nombre).getTileProvider(),
-      ),
-    );
-
+  void _startDownload() {
     setState(() {
       _isDownloading = true;
     });
 
-    _progressStream = FMTCStore(lugar.nombre).download.startForeground(
-          region: downloadableRegion,
-          skipExistingTiles: true,
-          skipSeaTiles: true,
-        );
+    final progressStream = _mapDownloadManager.startMapDownload();
+    progressStream.listen((progress) {
+      setState(() {
+        _downloadProgress = progress.percentageProgress;
+      });
 
-    _progressStream.listen((progress) {
-      print(
-          'Download Progress for ${lugar.nombre}: ${progress.percentageProgress * 100}%');
       if (progress.percentageProgress >= 1.0) {
         setState(() {
           _isDownloading = false;
           _isDownloaded = true;
         });
-        print('Download for ${lugar.nombre} completed!');
       }
+    });
+  }
+
+  Future<void> _getCurrentLocation() async {
+    setState(() {
+      _isFetchingLocation = true; // Mostrar diálogo de cargando
+    });
+
+    try {
+      final location = await _locationService.getCurrentLocation();
+      if (location != null) {
+        setState(() {
+          _currentLocation = location;
+          _currentLocationMarker = Marker(
+            width: 80.0,
+            height: 80.0,
+            point: _currentLocation!,
+            child: Icon(Icons.person_pin_circle, color: Colors.blue, size: 40),
+          );
+        });
+        _mapController.move(_currentLocation!, 15.0);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('No se pudo obtener la ubicación: $e')),
+      );
+    } finally {
+      setState(() {
+        _isFetchingLocation = false; // Ocultar diálogo de cargando
+      });
+    }
+  }
+
+  void _showDownloadDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          title: Text('Descargar Mapa'),
+          content: Text('¿Deseas descargar el mapa de ${widget.lugar.nombre}?'),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+              },
+              child: Text('Cancelar'),
+            ),
+            ElevatedButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                _startDownload();
+              },
+              child: Text('Descargar'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void _deleteDownloadedMap() async {
+    await _mapDownloadManager.deleteDownloadedMap();
+    setState(() {
+      _isDownloaded = false;
+      _downloadProgress = 0.0;
     });
   }
 
@@ -87,48 +138,103 @@ class _MapacatarataambitariniState extends State<Mapacatarataambitarini> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.lugar.nombre),
+        actions: [
+          if (_isDownloaded)
+            IconButton(
+              icon: Icon(Icons.delete),
+              onPressed: _deleteDownloadedMap,
+              tooltip: 'Eliminar mapa descargado',
+            ),
+        ],
       ),
-      body: _isDownloading
-          ? Center(child: CircularProgressIndicator())
-          : _isDownloaded
-              ? FlutterMap(
-                  mapController: _mapController,
-                  options: MapOptions(
-                    initialCenter: LatLng(
-                      (widget.lugar.region.southWest.latitude +
-                              widget.lugar.region.northEast.latitude) /
-                          2,
-                      (widget.lugar.region.southWest.longitude +
-                              widget.lugar.region.northEast.longitude) /
-                          2,
-                    ),
-                    initialZoom: 15.0,
-                  ),
-                  children: [
-                    TileLayer(
-                      urlTemplate:
-                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                      userAgentPackageName: 'com.example.app',
-                      tileProvider:
-                          FMTCStore(widget.lugar.nombre).getTileProvider(),
-                    ),
-                    PolylineLayer(
-                      polylines: [
-                        Polyline(
-                          points: widget.lugar.polyline,
-                          color: Colors.blue,
-                          strokeWidth: 4.0,
-                        ),
-                      ],
+      body: Stack(
+        children: [
+          if (_isDownloading)
+            Column(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                CircularProgressIndicator(),
+                SizedBox(height: 20),
+                LinearProgressIndicator(value: _downloadProgress),
+                Text(
+                    'Descargando... ${(_downloadProgress * 100).toStringAsFixed(0)}%'),
+              ],
+            )
+          else if (_isDownloaded)
+            FlutterMap(
+              mapController: _mapController,
+              options: MapOptions(
+                initialCenter: LatLng(-11.20857695048312, -74.66021205752597),
+                initialZoom: 15.0,
+              ),
+              children: [
+                TileLayer(
+                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  userAgentPackageName: 'com.example.app',
+                  tileProvider:
+                      FMTCStore(widget.lugar.nombre).getTileProvider(),
+                ),
+                PolylineLayer(
+                  polylines: [
+                    Polyline(
+                      points: widget.lugar.polyline,
+                      color: Colors.blue,
+                      strokeWidth: 7.0,
                     ),
                   ],
-                )
-              : Center(
-                  child: ElevatedButton(
-                    onPressed: () => _startDownloadForLugar(widget.lugar),
-                    child: Text('Descargar mapa'),
-                  ),
                 ),
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      width: 80.0,
+                      height: 80.0,
+                      point: LatLng(-11.20857695048312, -74.66021205752597),
+                      child: Column(
+                        children: [
+                          Icon(Icons.location_pin, color: Colors.red),
+                          Text('Rio Negro'),
+                        ],
+                      ),
+                    ),
+                    if (_currentLocationMarker != null) _currentLocationMarker!,
+                  ],
+                ),
+              ],
+            ),
+          Positioned(
+            bottom: 50,
+            right: 10,
+            child: FloatingActionButton(
+              onPressed: _getCurrentLocation,
+              child: Icon(Icons.my_location),
+              backgroundColor: Colors.blue,
+              tooltip: 'Mi Ubicación',
+            ),
+          ),
+          if (_isFetchingLocation)
+            Center(
+              child: AlertDialog(
+                content: Row(
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(width: 15),
+                    Text('Buscando su ubicación...'),
+                  ],
+                ),
+              ),
+            ),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                '© OpenStreetMap contributors',
+                style: TextStyle(fontSize: 12, color: Colors.black54),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

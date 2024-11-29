@@ -3,20 +3,22 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:latlong2/latlong.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:turismo/src/pages/home/modules/categoriaModel/categorias.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:turismo/src/pages/home/modules/mapas/descargarMapa.dart';
-import 'package:turismo/src/pages/home/modules/mapas/ubicacion.dart';
+import 'package:turismo/src/pages/home/modules/mapas/ubicación.dart';
 
-class Mapacataratacanuja extends StatefulWidget {
-  final Lugar lugar; // Recibe el lugar seleccionado
+class Mapayavirironi extends StatefulWidget {
+  final Lugar lugar;
 
-  const Mapacataratacanuja({required this.lugar, Key? key}) : super(key: key);
+  const Mapayavirironi({required this.lugar, Key? key}) : super(key: key);
 
   @override
-  State<Mapacataratacanuja> createState() => _MapacataratacanujaState();
+  State<Mapayavirironi> createState() => _MapayavirironiState();
 }
 
-class _MapacataratacanujaState extends State<Mapacataratacanuja> {
+class _MapayavirironiState extends State<Mapayavirironi> {
   bool _isDownloading = false;
   bool _isDownloaded = false;
   bool _isFetchingLocation = false; // Nuevo estado para buscar ubicación

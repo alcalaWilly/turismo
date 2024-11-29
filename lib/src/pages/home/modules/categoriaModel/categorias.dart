@@ -536,7 +536,25 @@ List<Categorias> categoriaData = [
         tiempoEstimado: 'A 1 hora',
         region:
             LatLngBounds(LatLng(-11.009, -74.675), LatLng(-11.209, -74.659)),
-        polyline: [LatLng(-11.209, -74.659), LatLng(-11.201, -74.665)],
+        polyline: [
+          LatLng(-11.20857695048312, -74.66021205752597),
+          LatLng(-11.208179891588912, -74.66050527274929),
+          LatLng(-11.208256410411309, -74.66053884512215),
+          LatLng(-11.20159761528555, -74.66514763988471),
+          LatLng(-11.200831830867827, -74.66532150827682),
+          LatLng(-11.200231099757772, -74.66527293279522),
+          LatLng(-11.18677475007047, -74.66205257712815),
+          //LatLng(),
+          LatLng(-11.186045369082265, -74.66153869306886),
+          LatLng(-11.182625044000574, -74.65586234894447),
+          LatLng(-11.182453445002068, -74.65517283034488),
+          LatLng(-11.182374037385486, -74.65445509339779),
+          LatLng(-11.1819623421748, -74.65399060843542),
+          LatLng(-11.181044048577377, -74.65378212708488),
+          LatLng(-11.180179169911057, -74.65425886301459),
+          //balle azul:
+          LatLng(-11.179897455473125, -74.65460755018661),
+        ],
       ),
       Lugar(
         nombre: 'Catarata Canuja',
@@ -559,138 +577,140 @@ List<Categorias> categoriaData = [
             LatLngBounds(LatLng(-11.009, -74.675), LatLng(-11.209, -74.659)),
         polyline: [LatLng(-11.209, -74.659), LatLng(-11.201, -74.665)],
       ),
-      Lugar(
-        nombre: 'Catarata Huahuari',
-        imagenes: [
-          'assets/rioNegro/CATARATA_HUAHUARI/huahuari1.webp',
-          'assets/rioNegro/CATARATA_HUAHUARI/huahuari2.webp',
-          'assets/rioNegro/CATARATA_HUAHUARI/huahuari3.webp',
-          'assets/rioNegro/CATARATA_HUAHUARI/huahuari4.webp',
-          'assets/rioNegro/CATARATA_HUAHUARI/huahuari5.webp',
-        ],
-        //imagen: 'assets/rioNegro/CATARATA_HUAHUARI/huahuari1.jpg',
-        descripcion:
-            'Formada por dos torrenteras de agua cristalina. La primera presenta una caída aproximada de 70 metros y es conocida como "El Manto de la Virgen".'
-            'La segunda, de menor tamaño pero de mayor caudal es la llamada Tsomontonari, tiene 40 m. de altura y tres niveles, la última de ellas y la'
-            'principal presenta gradas naturales por donde se puede acceder a la parte alta de la catarata. El río formado por estas cataratas presenta pozas de gran tamaño'
-            ' y profundidad (8 mt), en la que es posible bañarse. Las que se encuentran en la base de la catarata son las menos profundas, tienen un promedio de 6 m de ancho x 14 m de largo y 1 m de profundidad.',
+      // Lugar(
+      //   nombre: 'Catarata Huahuari',
+      //   imagenes: [
+      //     'assets/rioNegro/CATARATA_HUAHUARI/huahuari1.webp',
+      //     'assets/rioNegro/CATARATA_HUAHUARI/huahuari2.webp',
+      //     'assets/rioNegro/CATARATA_HUAHUARI/huahuari3.webp',
+      //     'assets/rioNegro/CATARATA_HUAHUARI/huahuari4.webp',
+      //     'assets/rioNegro/CATARATA_HUAHUARI/huahuari5.webp',
+      //   ],
+      //   //imagen: 'assets/rioNegro/CATARATA_HUAHUARI/huahuari1.jpg',
+      //   descripcion:
+      //       'Formada por dos torrenteras de agua cristalina. La primera presenta una caída aproximada de 70 metros y es conocida como "El Manto de la Virgen".'
+      //       'La segunda, de menor tamaño pero de mayor caudal es la llamada Tsomontonari, tiene 40 m. de altura y tres niveles, la última de ellas y la'
+      //       'principal presenta gradas naturales por donde se puede acceder a la parte alta de la catarata. El río formado por estas cataratas presenta pozas de gran tamaño'
+      //       ' y profundidad (8 mt), en la que es posible bañarse. Las que se encuentran en la base de la catarata son las menos profundas, tienen un promedio de 6 m de ancho x 14 m de largo y 1 m de profundidad.',
 
-        tiempoEstimado: '1.5 horas',
-        region:
-            LatLngBounds(LatLng(-11.009, -74.675), LatLng(-11.209, -74.659)),
-        polyline: [LatLng(-11.209, -74.659), LatLng(-11.201, -74.665)],
-      ),
-      Lugar(
-        nombre: 'Caverna Ashaninka',
-        imagenes: [
-          //'assets/rioNegro/CAVERNA_ASHANINKA/caverna1.jpg',
-          'assets/rioNegro/CAVERNA_ASHANINKA/caverna2.webp',
-          'assets/rioNegro/CAVERNA_ASHANINKA/caverna3.webp',
-          'assets/rioNegro/CAVERNA_ASHANINKA/caverna4.webp',
-          'assets/rioNegro/CAVERNA_ASHANINKA/caverna5.webp',
-          'assets/rioNegro/CAVERNA_ASHANINKA/caverna6.webp',
-          'assets/rioNegro/CAVERNA_ASHANINKA/caverna7.webp',
-        ],
-        //imagen: 'assets/rioNegro/CAVERNA_ASHANINKA/caverna2.JPG',
-        descripcion:
-            'Formada por dos torrenteras de agua cristalina. La primera presenta una caída aproximada de 70 metros y es conocida como "El Manto de la Virgen".'
-            'La segunda, de menor tamaño pero de mayor caudal es la llamada Tsomontonari, tiene 40 m. de altura y tres niveles, la última de ellas y la'
-            'principal presenta gradas naturales por donde se puede acceder a la parte alta de la catarata. El río formado por estas cataratas presenta pozas de gran tamaño'
-            ' y profundidad (8 mt), en la que es posible bañarse. Las que se encuentran en la base de la catarata son las menos profundas, tienen un promedio de 6 m de ancho x 14 m de largo y 1 m de profundidad.',
+      //   tiempoEstimado: '1.5 horas',
+      //   region:
+      //       LatLngBounds(LatLng(-11.009, -74.675), LatLng(-11.209, -74.659)),
+      //   polyline: [LatLng(-11.209, -74.659), LatLng(-11.201, -74.665)],
+      // ),
 
-        tiempoEstimado: 'A 45 minutos',
-        region:
-            LatLngBounds(LatLng(-11.009, -74.675), LatLng(-11.209, -74.659)),
-        polyline: [LatLng(-11.209, -74.659), LatLng(-11.201, -74.665)],
-      ),
-      Lugar(
-        nombre: 'Caverna Nueva Italia',
-        imagenes: [
-          'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia1.webp',
-          'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia2.webp',
-          'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia3.webp',
-          'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia4.webp',
-          'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia5.webp',
-          'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia6.webp',
-          'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia7.webp',
-          'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia8.webp',
-          'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia9.webp',
-          'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia10.webp',
-        ],
-        //imagen: 'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia1.jpeg',
-        descripcion:
-            'Formada por dos torrenteras de agua cristalina. La primera presenta una caída aproximada de 70 metros y es conocida como "El Manto de la Virgen".'
-            'La segunda, de menor tamaño pero de mayor caudal es la llamada Tsomontonari, tiene 40 m. de altura y tres niveles, la última de ellas y la'
-            'principal presenta gradas naturales por donde se puede acceder a la parte alta de la catarata. El río formado por estas cataratas presenta pozas de gran tamaño'
-            ' y profundidad (8 mt), en la que es posible bañarse. Las que se encuentran en la base de la catarata son las menos profundas, tienen un promedio de 6 m de ancho x 14 m de largo y 1 m de profundidad.',
+      // Lugar(
+      //   nombre: 'Caverna Ashaninka',
+      //   imagenes: [
+      //     //'assets/rioNegro/CAVERNA_ASHANINKA/caverna1.jpg',
+      //     'assets/rioNegro/CAVERNA_ASHANINKA/caverna2.webp',
+      //     'assets/rioNegro/CAVERNA_ASHANINKA/caverna3.webp',
+      //     'assets/rioNegro/CAVERNA_ASHANINKA/caverna4.webp',
+      //     'assets/rioNegro/CAVERNA_ASHANINKA/caverna5.webp',
+      //     'assets/rioNegro/CAVERNA_ASHANINKA/caverna6.webp',
+      //     'assets/rioNegro/CAVERNA_ASHANINKA/caverna7.webp',
+      //   ],
+      //   //imagen: 'assets/rioNegro/CAVERNA_ASHANINKA/caverna2.JPG',
+      //   descripcion:
+      //       'Formada por dos torrenteras de agua cristalina. La primera presenta una caída aproximada de 70 metros y es conocida como "El Manto de la Virgen".'
+      //       'La segunda, de menor tamaño pero de mayor caudal es la llamada Tsomontonari, tiene 40 m. de altura y tres niveles, la última de ellas y la'
+      //       'principal presenta gradas naturales por donde se puede acceder a la parte alta de la catarata. El río formado por estas cataratas presenta pozas de gran tamaño'
+      //       ' y profundidad (8 mt), en la que es posible bañarse. Las que se encuentran en la base de la catarata son las menos profundas, tienen un promedio de 6 m de ancho x 14 m de largo y 1 m de profundidad.',
 
-        tiempoEstimado: 'A 45 minutos',
-        region:
-            LatLngBounds(LatLng(-11.009, -74.675), LatLng(-11.209, -74.659)),
-        polyline: [LatLng(-11.209, -74.659), LatLng(-11.201, -74.665)],
-      ),
-      Lugar(
-        nombre: 'Cascada Nueva Italia',
-        imagenes: [
-          'assets/rioNegro/CAVERNA_NUEVA_ITALIA/CASCADA_NUEVA _ITALIA/cascadaitalia1.webp',
-          'assets/rioNegro/CAVERNA_NUEVA_ITALIA/CASCADA_NUEVA _ITALIA/cascadaitalia2.webp',
-        ],
-        //imagen:
-        //    'assets/rioNegro/CAVERNA_NUEVA_ITALIA/CASCADA_NUEVA _ITALIA/cascadaItalia1.JPG',
-        descripcion:
-            'Formada por dos torrenteras de agua cristalina. La primera presenta una caída aproximada de 70 metros y es conocida como "El Manto de la Virgen".'
-            'La segunda, de menor tamaño pero de mayor caudal es la llamada Tsomontonari, tiene 40 m. de altura y tres niveles, la última de ellas y la'
-            'principal presenta gradas naturales por donde se puede acceder a la parte alta de la catarata. El río formado por estas cataratas presenta pozas de gran tamaño'
-            ' y profundidad (8 mt), en la que es posible bañarse. Las que se encuentran en la base de la catarata son las menos profundas, tienen un promedio de 6 m de ancho x 14 m de largo y 1 m de profundidad.',
+      //   tiempoEstimado: 'A 45 minutos',
+      //   region:
+      //       LatLngBounds(LatLng(-11.009, -74.675), LatLng(-11.209, -74.659)),
+      //   polyline: [LatLng(-11.209, -74.659), LatLng(-11.201, -74.665)],
+      // ),
+      // Lugar(
+      //   nombre: 'Caverna Nueva Italia',
+      //   imagenes: [
+      //     'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia1.webp',
+      //     'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia2.webp',
+      //     'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia3.webp',
+      //     'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia4.webp',
+      //     'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia5.webp',
+      //     'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia6.webp',
+      //     'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia7.webp',
+      //     'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia8.webp',
+      //     'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia9.webp',
+      //     'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia10.webp',
+      //   ],
+      //   //imagen: 'assets/rioNegro/CAVERNA_NUEVA_ITALIA/italia1.jpeg',
+      //   descripcion:
+      //       'Formada por dos torrenteras de agua cristalina. La primera presenta una caída aproximada de 70 metros y es conocida como "El Manto de la Virgen".'
+      //       'La segunda, de menor tamaño pero de mayor caudal es la llamada Tsomontonari, tiene 40 m. de altura y tres niveles, la última de ellas y la'
+      //       'principal presenta gradas naturales por donde se puede acceder a la parte alta de la catarata. El río formado por estas cataratas presenta pozas de gran tamaño'
+      //       ' y profundidad (8 mt), en la que es posible bañarse. Las que se encuentran en la base de la catarata son las menos profundas, tienen un promedio de 6 m de ancho x 14 m de largo y 1 m de profundidad.',
 
-        tiempoEstimado: '1.5 horas',
-        region:
-            LatLngBounds(LatLng(-11.009, -74.675), LatLng(-11.209, -74.659)),
-        polyline: [LatLng(-11.209, -74.659), LatLng(-11.201, -74.665)],
-      ),
-      Lugar(
-        nombre: 'Cueva Vanhellsing',
-        imagenes: [
-          'assets/rioNegro/CAVERNA_VANHELLSING_UNION_HUANCAYO_HUAHARI/vanhellsing1.webp',
-          'assets/rioNegro/CAVERNA_VANHELLSING_UNION_HUANCAYO_HUAHARI/vanhellsing2.webp',
-          'assets/rioNegro/CAVERNA_VANHELLSING_UNION_HUANCAYO_HUAHARI/vanhellsing3.webp',
-          'assets/rioNegro/CAVERNA_VANHELLSING_UNION_HUANCAYO_HUAHARI/vanhellsing4.webp',
-          'assets/rioNegro/CAVERNA_VANHELLSING_UNION_HUANCAYO_HUAHARI/vanhellsing5.webp',
-        ],
-        //imagen:
-        //    'assets/rioNegro/CAVERNA_VANHELLSING_UNION_HUANCAYO_HUAHARI/vanhellsing1.jpg',
-        descripcion:
-            'Formada por dos torrenteras de agua cristalina. La primera presenta una caída aproximada de 70 metros y es conocida como "El Manto de la Virgen".'
-            'La segunda, de menor tamaño pero de mayor caudal es la llamada Tsomontonari, tiene 40 m. de altura y tres niveles, la última de ellas y la'
-            'principal presenta gradas naturales por donde se puede acceder a la parte alta de la catarata. El río formado por estas cataratas presenta pozas de gran tamaño'
-            ' y profundidad (8 mt), en la que es posible bañarse. Las que se encuentran en la base de la catarata son las menos profundas, tienen un promedio de 6 m de ancho x 14 m de largo y 1 m de profundidad.',
+      //   tiempoEstimado: 'A 45 minutos',
+      //   region:
+      //       LatLngBounds(LatLng(-11.009, -74.675), LatLng(-11.209, -74.659)),
+      //   polyline: [LatLng(-11.209, -74.659), LatLng(-11.201, -74.665)],
+      // ),
+      // Lugar(
+      //   nombre: 'Cascada Nueva Italia',
+      //   imagenes: [
+      //     'assets/rioNegro/CAVERNA_NUEVA_ITALIA/CASCADA_NUEVA _ITALIA/cascadaitalia1.webp',
+      //     'assets/rioNegro/CAVERNA_NUEVA_ITALIA/CASCADA_NUEVA _ITALIA/cascadaitalia2.webp',
+      //   ],
+      //   //imagen:
+      //   //    'assets/rioNegro/CAVERNA_NUEVA_ITALIA/CASCADA_NUEVA _ITALIA/cascadaItalia1.JPG',
+      //   descripcion:
+      //       'Formada por dos torrenteras de agua cristalina. La primera presenta una caída aproximada de 70 metros y es conocida como "El Manto de la Virgen".'
+      //       'La segunda, de menor tamaño pero de mayor caudal es la llamada Tsomontonari, tiene 40 m. de altura y tres niveles, la última de ellas y la'
+      //       'principal presenta gradas naturales por donde se puede acceder a la parte alta de la catarata. El río formado por estas cataratas presenta pozas de gran tamaño'
+      //       ' y profundidad (8 mt), en la que es posible bañarse. Las que se encuentran en la base de la catarata son las menos profundas, tienen un promedio de 6 m de ancho x 14 m de largo y 1 m de profundidad.',
 
-        tiempoEstimado: '1.5 horas',
-        region: LatLngBounds(LatLng(-11.178, -74.619),
-            LatLng(-11.344, -74.554)), //superior derecho, inferior izquierdo
-        polyline: [LatLng(-11.209, -74.659), LatLng(-11.329, -74.531)],
-      ),
-      Lugar(
-        nombre: 'Catarata Ambitarini',
-        imagenes: [
-          'assets/rioNegro/CERRO_SOMBRERO_CATARATA_AMBITARINI/ambitarini1.webp',
-          'assets/rioNegro/CERRO_SOMBRERO_CATARATA_AMBITARINI/ambitarini2.webp',
-          'assets/rioNegro/CERRO_SOMBRERO_CATARATA_AMBITARINI/ambitarini3.webp',
-          'assets/rioNegro/CERRO_SOMBRERO_CATARATA_AMBITARINI/ambitarini4.webp',
-        ],
-        //imagen:
-        //    'assets/rioNegro/CERRO_SOMBRERO_CATARATA_AMBITARINI/ambitarini1.jpg',
-        descripcion:
-            'Formada por dos torrenteras de agua cristalina. La primera presenta una caída aproximada de 70 metros y es conocida como "El Manto de la Virgen".'
-            'La segunda, de menor tamaño pero de mayor caudal es la llamada Tsomontonari, tiene 40 m. de altura y tres niveles, la última de ellas y la'
-            'principal presenta gradas naturales por donde se puede acceder a la parte alta de la catarata. El río formado por estas cataratas presenta pozas de gran tamaño'
-            ' y profundidad (8 mt), en la que es posible bañarse. Las que se encuentran en la base de la catarata son las menos profundas, tienen un promedio de 6 m de ancho x 14 m de largo y 1 m de profundidad.',
+      //   tiempoEstimado: '1.5 horas',
+      //   region:
+      //       LatLngBounds(LatLng(-11.009, -74.675), LatLng(-11.209, -74.659)),
+      //   polyline: [LatLng(-11.209, -74.659), LatLng(-11.201, -74.665)],
+      // ),
+      // Lugar(
+      //   nombre: 'Cueva Vanhellsing',
+      //   imagenes: [
+      //     'assets/rioNegro/CAVERNA_VANHELLSING_UNION_HUANCAYO_HUAHARI/vanhellsing1.webp',
+      //     'assets/rioNegro/CAVERNA_VANHELLSING_UNION_HUANCAYO_HUAHARI/vanhellsing2.webp',
+      //     'assets/rioNegro/CAVERNA_VANHELLSING_UNION_HUANCAYO_HUAHARI/vanhellsing3.webp',
+      //     'assets/rioNegro/CAVERNA_VANHELLSING_UNION_HUANCAYO_HUAHARI/vanhellsing4.webp',
+      //     'assets/rioNegro/CAVERNA_VANHELLSING_UNION_HUANCAYO_HUAHARI/vanhellsing5.webp',
+      //   ],
+      //   //imagen:
+      //   //    'assets/rioNegro/CAVERNA_VANHELLSING_UNION_HUANCAYO_HUAHARI/vanhellsing1.jpg',
+      //   descripcion:
+      //       'Formada por dos torrenteras de agua cristalina. La primera presenta una caída aproximada de 70 metros y es conocida como "El Manto de la Virgen".'
+      //       'La segunda, de menor tamaño pero de mayor caudal es la llamada Tsomontonari, tiene 40 m. de altura y tres niveles, la última de ellas y la'
+      //       'principal presenta gradas naturales por donde se puede acceder a la parte alta de la catarata. El río formado por estas cataratas presenta pozas de gran tamaño'
+      //       ' y profundidad (8 mt), en la que es posible bañarse. Las que se encuentran en la base de la catarata son las menos profundas, tienen un promedio de 6 m de ancho x 14 m de largo y 1 m de profundidad.',
 
-        tiempoEstimado: '1.5 horas',
-        region:
-            LatLngBounds(LatLng(-11.009, -74.675), LatLng(-11.209, -74.659)),
-        polyline: [LatLng(-11.209, -74.659), LatLng(-11.201, -74.665)],
-      ),
+      //   tiempoEstimado: '1.5 horas',
+      //   region: LatLngBounds(LatLng(-11.178, -74.619),
+      //       LatLng(-11.344, -74.554)), //superior derecho, inferior izquierdo
+      //   polyline: [LatLng(-11.209, -74.659), LatLng(-11.329, -74.531)],
+      // ),
+      // Lugar(
+      //   nombre: 'Catarata Ambitarini',
+      //   imagenes: [
+      //     'assets/rioNegro/CERRO_SOMBRERO_CATARATA_AMBITARINI/ambitarini1.webp',
+      //     'assets/rioNegro/CERRO_SOMBRERO_CATARATA_AMBITARINI/ambitarini2.webp',
+      //     'assets/rioNegro/CERRO_SOMBRERO_CATARATA_AMBITARINI/ambitarini3.webp',
+      //     'assets/rioNegro/CERRO_SOMBRERO_CATARATA_AMBITARINI/ambitarini4.webp',
+      //   ],
+      //   //imagen:
+      //   //    'assets/rioNegro/CERRO_SOMBRERO_CATARATA_AMBITARINI/ambitarini1.jpg',
+      //   descripcion:
+      //       'Formada por dos torrenteras de agua cristalina. La primera presenta una caída aproximada de 70 metros y es conocida como "El Manto de la Virgen".'
+      //       'La segunda, de menor tamaño pero de mayor caudal es la llamada Tsomontonari, tiene 40 m. de altura y tres niveles, la última de ellas y la'
+      //       'principal presenta gradas naturales por donde se puede acceder a la parte alta de la catarata. El río formado por estas cataratas presenta pozas de gran tamaño'
+      //       ' y profundidad (8 mt), en la que es posible bañarse. Las que se encuentran en la base de la catarata son las menos profundas, tienen un promedio de 6 m de ancho x 14 m de largo y 1 m de profundidad.',
+
+      //   tiempoEstimado: '1.5 horas',
+      //   region:
+      //       LatLngBounds(LatLng(-11.009, -74.675), LatLng(-11.209, -74.659)),
+      //   polyline: [LatLng(-11.209, -74.659), LatLng(-11.201, -74.665)],
+      // ),
+
       Lugar(
         nombre: 'Catarata Cunampiaro',
         imagenes: [
@@ -762,7 +782,49 @@ List<Categorias> categoriaData = [
         tiempoEstimado: '3 horas',
         region:
             LatLngBounds(LatLng(-11.009, -74.675), LatLng(-11.209, -74.659)),
-        polyline: [LatLng(-11.209, -74.659), LatLng(-11.201, -74.665)],
+        polyline: [
+          LatLng(-11.20857695048312, -74.66021205752597),
+          LatLng(-11.208179891588912, -74.66050527274929),
+          LatLng(-11.208256410411309, -74.66053884512215),
+          LatLng(-11.20159761528555, -74.66514763988471),
+          LatLng(-11.200831830867827, -74.66532150827682),
+          LatLng(-11.200231099757772, -74.66527293279522),
+          LatLng(-11.18677475007047, -74.66205257712815),
+          //LatLng(),
+          LatLng(-11.186045369082265, -74.66153869306886),
+          LatLng(-11.182625044000574, -74.65586234894447),
+          LatLng(-11.182453445002068, -74.65517283034488),
+          LatLng(-11.182374037385486, -74.65445509339779),
+          LatLng(-11.1819623421748, -74.65399060843542),
+          LatLng(-11.181044048577377, -74.65378212708488),
+          LatLng(-11.180179169911057, -74.65425886301459),
+          //balle azul:
+          LatLng(-11.179897455473125, -74.65460755018661),
+          //
+          LatLng(-11.179776476016741, -74.65537498595666),
+          LatLng(-11.17983596883505, -74.6560760681867),
+          LatLng(-11.179740533592607, -74.65634011638751),
+          LatLng(-11.179094751034867, -74.65659739645322),
+          LatLng(-11.178723245453654, -74.65710102887864),
+          LatLng(-11.178705707053695, -74.658172282545),
+          LatLng(-11.178396317742454, -74.65853954295598),
+          LatLng(-11.177141929562737, -74.65843218048998),
+          LatLng(-11.173797553928011, -74.65903457034341),
+          LatLng(-11.168853089222566, -74.66078266044741),
+          LatLng(-11.147811277017894, -74.6648619097495),
+          LatLng(-11.146170408764618, -74.66548743082232),
+          //Villa Cpiri
+          LatLng(-11.130454665364695, -74.67398335859723),
+          LatLng(-11.125717709532523, -74.67641128919632),
+          LatLng(-11.124931413043072, -74.67735465004085),
+          LatLng(-11.12403609638855, -74.68007587390318),
+          LatLng(-11.123110461805751, -74.68104887301706),
+          LatLng(-11.117064144315009, -74.68367323152658),
+          //Unión Capiri
+          LatLng(-11.094972222290522, -74.70135809535316),
+          //Yavirironi
+          LatLng(-11.088049013305792, -74.70690188994469),
+        ],
       ),
     ],
   ),

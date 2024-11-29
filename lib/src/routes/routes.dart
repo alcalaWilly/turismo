@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:turismo/src/pages/home/explore/categorias/lugaresCategorias/folklore/lugarFolclore/yavirironi.dart';
+import 'package:turismo/src/pages/home/explore/categorias/lugaresCategorias/folklore/mapaFolclore/mapaYavirironi.dart';
 import 'package:turismo/src/pages/home/explore/categorias/lugaresCategorias/manifestacionesCulturales/lugaresManifestaciones/capilla.dart';
 import 'package:turismo/src/pages/home/explore/categorias/lugaresCategorias/manifestacionesCulturales/lugaresManifestaciones/parque.dart';
 import 'package:turismo/src/pages/home/explore/categorias/lugaresCategorias/manifestacionesCulturales/mapaManifestaciones/mapaCapilla.dart';
@@ -143,6 +145,14 @@ Map<String, WidgetBuilder> rutas = {
         lugar: ModalRoute.of(context)!.settings.arguments as Lugar,
       ),
   'Mapacapilla': (context) => Mapacapilla(
+        lugar: ModalRoute.of(context)!.settings.arguments as Lugar,
+      ),
+  /////////////////////////////////FOLKLORE:
+  'Yavirironi': (context) => Yavirironi(
+        lugar: ModalRoute.of(context)!.settings.arguments as Lugar,
+      ),
+  ///////////////////////////////MAPA
+  'Mapayavirironi': (context) => Mapayavirironi(
         lugar: ModalRoute.of(context)!.settings.arguments as Lugar,
       ),
 };
