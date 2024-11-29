@@ -5,7 +5,7 @@ import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:turismo/src/pages/home/modules/categoriaModel/categorias.dart';
 import 'package:turismo/src/pages/home/modules/mapas/descargarMapa.dart';
-import 'package:turismo/src/pages/home/modules/mapas/ubicaci%C3%B3n.dart';
+import 'package:turismo/src/pages/home/modules/mapas/ubicacion.dart';
 
 class Mapacatarataambitarini extends StatefulWidget {
   final Lugar lugar; // Recibe el lugar seleccionado

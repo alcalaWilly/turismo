@@ -3,9 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_map/flutter_map.dart';
 import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:latlong2/latlong.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:turismo/src/pages/home/modules/categoriaModel/categorias.dart';
-import 'package:geolocator/geolocator.dart';
 import 'package:turismo/src/pages/home/modules/mapas/descargarMapa.dart';
 import 'package:turismo/src/pages/home/modules/mapas/ubicacion.dart';
 

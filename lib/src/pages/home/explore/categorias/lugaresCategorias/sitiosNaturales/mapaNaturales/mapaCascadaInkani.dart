@@ -6,7 +6,7 @@ import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:turismo/src/pages/home/modules/categoriaModel/categorias.dart';
 import 'package:turismo/src/pages/home/modules/mapas/descargarMapa.dart';
-import 'package:turismo/src/pages/home/modules/mapas/ubicaci%C3%B3n.dart';
+import 'package:turismo/src/pages/home/modules/mapas/ubicacion.dart';
 
 class Mapacascadainkani extends StatefulWidget {
   final Lugar lugar;

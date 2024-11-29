@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:turismo/src/pages/home/modules/categoriaModel/categorias.dart';
 import 'package:geolocator/geolocator.dart';
 import 'package:turismo/src/pages/home/modules/mapas/descargarMapa.dart';
-import 'package:turismo/src/pages/home/modules/mapas/ubicación.dart';
+import 'package:turismo/src/pages/home/modules/mapas/ubicacion.dart';
 
 class Mapayavirironi extends StatefulWidget {
   final Lugar lugar;

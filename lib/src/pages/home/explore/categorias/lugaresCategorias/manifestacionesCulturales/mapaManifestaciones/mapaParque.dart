@@ -5,6 +5,8 @@ import 'package:flutter_map_tile_caching/flutter_map_tile_caching.dart';
 import 'package:latlong2/latlong.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:turismo/src/pages/home/modules/categoriaModel/categorias.dart';
+import 'package:turismo/src/pages/home/modules/mapas/descargarMapa.dart';
+import 'package:turismo/src/pages/home/modules/mapas/ubicacion.dart';
 
 class MapaParque extends StatefulWidget {
   final Lugar lugar;
@@ -18,39 +20,84 @@ class MapaParque extends StatefulWidget {
 class _MapaParqueState extends State<MapaParque> {
   bool _isDownloading = false;
   bool _isDownloaded = false;
+  bool _isFetchingLocation = false; // Nuevo estado para buscar ubicación
   double _downloadProgress = 0.0;
-  late final Stream<DownloadProgress> _progressStream;
+  LatLng? _currentLocation;
+  Marker? _currentLocationMarker;
+
   final MapController _mapController = MapController();
+  late MapDownloadManager _mapDownloadManager;
+  late LocationService _locationService;
 
   @override
   void initState() {
     super.initState();
-    _checkIfMapDownloaded(
-        widget.lugar); // Solo verifica si el mapa ya fue descargado
+    _mapDownloadManager = MapDownloadManager(widget.lugar);
+    _locationService = LocationService();
+    _checkIfMapDownloaded();
   }
 
-  // Verifica si ya se ha descargado el mapa
-  void _checkIfMapDownloaded(Lugar lugar) async {
-    final store = FMTCStore(lugar.nombre);
-    final mgmt = store.manage;
+  void _checkIfMapDownloaded() async {
+    bool isDownloaded = await _mapDownloadManager.isMapDownloaded();
+    setState(() {
+      _isDownloaded = isDownloaded;
+    });
 
-    if (!(await mgmt.ready)) {
-      await mgmt.create();
+    if (!isDownloaded) {
+      Future.delayed(Duration.zero, _showDownloadDialog);
     }
+  }
 
-    bool tilesCached = await mgmt.ready;
+  void _startDownload() {
+    setState(() {
+      _isDownloading = true;
+    });
 
-    if (tilesCached) {
+    final progressStream = _mapDownloadManager.startMapDownload();
+    progressStream.listen((progress) {
       setState(() {
-        _isDownloaded = true;
+        _downloadProgress = progress.percentageProgress;
       });
-    } else {
-      // Si no está descargado, mostrar diálogo
-      Future.delayed(Duration.zero, () => _showDownloadDialog());
+
+      if (progress.percentageProgress >= 1.0) {
+        setState(() {
+          _isDownloading = false;
+          _isDownloaded = true;
+        });
+      }
+    });
+  }
+
+  Future<void> _getCurrentLocation() async {
+    setState(() {
+      _isFetchingLocation = true; // Mostrar diálogo de cargando
+    });
+
+    try {
+      final location = await _locationService.getCurrentLocation();
+      if (location != null) {
+        setState(() {
+          _currentLocation = location;
+          _currentLocationMarker = Marker(
+            width: 80.0,
+            height: 80.0,
+            point: _currentLocation!,
+            child: Icon(Icons.person_pin_circle, color: Colors.blue, size: 40),
+          );
+        });
+        _mapController.move(_currentLocation!, 15.0);
+      }
+    } catch (e) {
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(content: Text('No se pudo obtener la ubicación: $e')),
+      );
+    } finally {
+      setState(() {
+        _isFetchingLocation = false; // Ocultar diálogo de cargando
+      });
     }
   }
 
-  // Muestra el diálogo para confirmar si desea descargar el mapa
   void _showDownloadDialog() {
     showDialog(
       context: context,
@@ -61,15 +108,14 @@ class _MapaParqueState extends State<MapaParque> {
           actions: [
             TextButton(
               onPressed: () {
-                Navigator.of(context).pop(); // Cierra el diálogo sin descargar
+                Navigator.of(context).pop();
               },
               child: Text('Cancelar'),
             ),
             ElevatedButton(
               onPressed: () {
-                Navigator.of(context)
-                    .pop(); // Cierra el diálogo y comienza la descarga
-                _startDownloadForLugar(widget.lugar);
+                Navigator.of(context).pop();
+                _startDownload();
               },
               child: Text('Descargar'),
             ),
@@ -79,59 +125,12 @@ class _MapaParqueState extends State<MapaParque> {
     );
   }
 
-  // Inicia la descarga del mapa
-  void _startDownloadForLugar(Lugar lugar) {
-    final region = RectangleRegion(lugar.region);
-    final downloadableRegion = region.toDownloadable(
-      minZoom: 1,
-      maxZoom: 16,
-      options: TileLayer(
-        urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-        userAgentPackageName: 'com.example.app',
-        tileProvider: FMTCStore(lugar.nombre).getTileProvider(),
-      ),
-    );
-
-    setState(() {
-      _isDownloading = true;
-    });
-
-    _progressStream = FMTCStore(lugar.nombre).download.startForeground(
-          region: downloadableRegion,
-          skipExistingTiles: true,
-          skipSeaTiles: true,
-        );
-
-    _progressStream.listen((progress) async {
-      setState(() {
-        _downloadProgress = progress.percentageProgress;
-      });
-
-      SharedPreferences prefs = await SharedPreferences.getInstance();
-      prefs.setDouble('downloadProgress_${lugar.nombre}', _downloadProgress);
-
-      if (progress.percentageProgress >= 1.0) {
-        setState(() {
-          _isDownloading = false;
-          _isDownloaded = true;
-        });
-        prefs.remove('downloadProgress_${lugar.nombre}');
-        print('Download for ${lugar.nombre} completed!');
-      }
-    });
-  }
-
-  // Elimina el mapa descargado
-  void _deleteDownloadedMap(Lugar lugar) async {
-    final store = FMTCStore(lugar.nombre);
-    await store.manage.delete();
+  void _deleteDownloadedMap() async {
+    await _mapDownloadManager.deleteDownloadedMap();
     setState(() {
       _isDownloaded = false;
       _downloadProgress = 0.0;
     });
-    SharedPreferences prefs = await SharedPreferences.getInstance();
-    prefs.remove('downloadProgress_${lugar.nombre}');
-    print('Map data for ${lugar.nombre} deleted');
   }
 
   @override
@@ -143,13 +142,15 @@ class _MapaParqueState extends State<MapaParque> {
           if (_isDownloaded)
             IconButton(
               icon: Icon(Icons.delete),
-              onPressed: () => _deleteDownloadedMap(widget.lugar),
+              onPressed: _deleteDownloadedMap,
               tooltip: 'Eliminar mapa descargado',
             ),
         ],
       ),
-      body: _isDownloading
-          ? Column(
+      body: Stack(
+        children: [
+          if (_isDownloading)
+            Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
                 CircularProgressIndicator(),
@@ -159,45 +160,81 @@ class _MapaParqueState extends State<MapaParque> {
                     'Descargando... ${(_downloadProgress * 100).toStringAsFixed(0)}%'),
               ],
             )
-          : _isDownloaded
-              ? FlutterMap(
-                  mapController: _mapController,
-                  options: MapOptions(
-                    initialCenter: LatLng(
-                      (widget.lugar.region.southWest.latitude +
-                              widget.lugar.region.northEast.latitude) /
-                          2,
-                      (widget.lugar.region.southWest.longitude +
-                              widget.lugar.region.northEast.longitude) /
-                          2,
-                    ),
-                    initialZoom: 15.0,
-                  ),
-                  children: [
-                    TileLayer(
-                      urlTemplate:
-                          'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
-                      userAgentPackageName: 'com.example.app',
-                      tileProvider:
-                          FMTCStore(widget.lugar.nombre).getTileProvider(),
-                    ),
-                    PolylineLayer(
-                      polylines: [
-                        Polyline(
-                          points: widget.lugar.polyline,
-                          color: Colors.blue,
-                          strokeWidth: 4.0,
-                        ),
-                      ],
+          else if (_isDownloaded)
+            FlutterMap(
+              mapController: _mapController,
+              options: MapOptions(
+                initialCenter: LatLng(-11.20857695048312, -74.66021205752597),
+                initialZoom: 15.0,
+              ),
+              children: [
+                TileLayer(
+                  urlTemplate: 'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+                  userAgentPackageName: 'com.example.app',
+                  tileProvider:
+                      FMTCStore(widget.lugar.nombre).getTileProvider(),
+                ),
+                PolylineLayer(
+                  polylines: [
+                    Polyline(
+                      points: widget.lugar.polyline,
+                      color: Colors.blue,
+                      strokeWidth: 7.0,
                     ),
                   ],
-                )
-              : Center(
-                  child: ElevatedButton(
-                    onPressed: () => _startDownloadForLugar(widget.lugar),
-                    child: Text('Descargar mapa'),
-                  ),
                 ),
+                MarkerLayer(
+                  markers: [
+                    Marker(
+                      width: 80.0,
+                      height: 80.0,
+                      point: LatLng(-11.20857695048312, -74.66021205752597),
+                      child: Column(
+                        children: [
+                          Icon(Icons.location_pin, color: Colors.red),
+                          Text('Rio Negro'),
+                        ],
+                      ),
+                    ),
+                    if (_currentLocationMarker != null) _currentLocationMarker!,
+                  ],
+                ),
+              ],
+            ),
+          Positioned(
+            bottom: 50,
+            right: 10,
+            child: FloatingActionButton(
+              onPressed: _getCurrentLocation,
+              child: Icon(Icons.my_location),
+              backgroundColor: Colors.blue,
+              tooltip: 'Mi Ubicación',
+            ),
+          ),
+          if (_isFetchingLocation)
+            Center(
+              child: AlertDialog(
+                content: Row(
+                  children: [
+                    CircularProgressIndicator(),
+                    SizedBox(width: 15),
+                    Text('Buscando su ubicación...'),
+                  ],
+                ),
+              ),
+            ),
+          Align(
+            alignment: Alignment.bottomLeft,
+            child: Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Text(
+                '© OpenStreetMap contributors',
+                style: TextStyle(fontSize: 12, color: Colors.black54),
+              ),
+            ),
+          ),
+        ],
+      ),
     );
   }
 }
