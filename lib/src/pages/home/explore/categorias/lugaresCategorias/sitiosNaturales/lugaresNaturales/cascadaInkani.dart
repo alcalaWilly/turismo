@@ -1,13 +1,11 @@
 import 'dart:async';
 
 import 'package:flutter/material.dart';
+import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:turismo/src/pages/home/explore/categorias/lugaresCategorias/sitiosNaturales/mapaNaturales/mapaCascadaInkani.dart';
 import 'package:turismo/src/pages/home/modules/categoriaModel/categorias.dart';
-import 'package:smooth_page_indicator/smooth_page_indicator.dart';
 import 'package:turismo/src/pages/home/visitas/datoVistas/visitasDB.dart';
 import 'package:turismo/src/pages/home/visitas/guardar/guardar.dart';
-import 'package:turismo/src/pages/login/entities/objectbox.dart';
-import 'package:turismo/src/pages/login/objectbox.g.dart';
 import 'package:turismo/src/sincronizacion/mongo_service.dart';
 
 class CascadaIncani extends StatefulWidget {
@@ -21,24 +19,43 @@ class CascadaIncani extends StatefulWidget {
 
 class _CascadaIncaniState extends State<CascadaIncani> {
   final PageController _pageController = PageController();
+  Timer? _visitTimer; // Temporizador para registrar la visita
+  bool _visitRegistered = false; // Indica si la visita ya fue registrada
   int _currentPage = 0;
-  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
 
-    // Iniciar un temporizador que registre una visita cada 1 minuto
-    _timer = Timer.periodic(Duration(minutes: 1), (timer) {
-      registerVisit(widget.lugar);
+    // Inicia un temporizador que espera 1 minuto para registrar la visita
+    _visitTimer = Timer(Duration(minutes: 1), () async {
+      if (!_visitRegistered) {
+        _visitRegistered = true;
+        await registerVisit(widget.lugar);
+      }
     });
   }
 
   @override
   void dispose() {
-    _timer?.cancel(); // Cancelar el temporizador al salir de la página
+    _visitTimer?.cancel(); // Cancela el temporizador al salir de la página
     _pageController.dispose();
     super.dispose();
+  }
+
+  /// Registra la visita en ObjectBox y sincroniza con MongoDB
+  Future<void> registerVisit(Lugar lugar) async {
+    final nuevaVisita = Visita(
+      nombreLugar: lugar.nombre,
+      fechaVisita: DateTime.now(),
+      syncPending: true, // Marca como pendiente de sincronización
+    );
+
+    // Guardar la visita en ObjectBox
+    await ObjectBoxService.guardarVisita(nuevaVisita);
+
+    // Intentar sincronizar con MongoDB
+    await VisitaRepository.sincronizarVisitasConMongo();
   }
 
   @override
@@ -407,41 +424,32 @@ class _CascadaIncaniState extends State<CascadaIncani> {
                 height: 30,
                 width: 100,
                 decoration: BoxDecoration(
-                  color: Colors.indigo, // Color del contenedor
+                  color: Colors.indigo,
                   borderRadius: BorderRadius.circular(20),
                 ),
                 child: Center(
                   child: InkWell(
                     onTap: () {
-                      // Navega a la página del mapa cuando se presiona el botón
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => Mapacascadainkani(
-                            lugar: widget
-                                .lugar, // Pasa el lugar seleccionado a la página del mapa
-                          ),
+                          builder: (context) =>
+                              Mapacascadainkani(lugar: widget.lugar),
                         ),
                       );
                     },
                     child: Row(
-                      mainAxisSize: MainAxisSize
-                          .min, // Ajusta el tamaño del Row al contenido
+                      mainAxisSize: MainAxisSize.min,
                       children: [
                         Text(
-                          'Quiero ir', // Texto dentro del botón
+                          'Quiero ir',
                           style: TextStyle(
                             color: Colors.white,
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
-                        SizedBox(width: 8),
-                        Icon(
-                          Icons.map_sharp, // Icono de mapa
-                          color: Colors.white,
-                          size: 18,
-                        ), // Espacio entre el icono y el texto
+                        Icon(Icons.map_sharp, color: Colors.white, size: 18),
                       ],
                     ),
                   ),

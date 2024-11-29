@@ -20,24 +20,43 @@ class Cuevavanhellsing extends StatefulWidget {
 
 class _CuevavanhellsingState extends State<Cuevavanhellsing> {
   final PageController _pageController = PageController();
+  Timer? _visitTimer; // Temporizador para registrar la visita
+  bool _visitRegistered = false; // Indica si la visita ya fue registrada
   int _currentPage = 0;
-  Timer? _timer;
 
   @override
   void initState() {
     super.initState();
 
-    // Iniciar un temporizador que registre una visita cada 1 minuto
-    _timer = Timer.periodic(Duration(minutes: 1), (timer) {
-      registerVisit(widget.lugar);
+    // Inicia un temporizador que espera 1 minuto para registrar la visita
+    _visitTimer = Timer(Duration(minutes: 1), () async {
+      if (!_visitRegistered) {
+        _visitRegistered = true;
+        await registerVisit(widget.lugar);
+      }
     });
   }
 
   @override
   void dispose() {
-    _timer?.cancel(); // Cancelar el temporizador al salir de la página
+    _visitTimer?.cancel(); // Cancela el temporizador al salir de la página
     _pageController.dispose();
     super.dispose();
+  }
+
+  /// Registra la visita en ObjectBox y sincroniza con MongoDB
+  Future<void> registerVisit(Lugar lugar) async {
+    final nuevaVisita = Visita(
+      nombreLugar: lugar.nombre,
+      fechaVisita: DateTime.now(),
+      syncPending: true, // Marca como pendiente de sincronización
+    );
+
+    // Guardar la visita en ObjectBox
+    await ObjectBoxService.guardarVisita(nuevaVisita);
+
+    // Intentar sincronizar con MongoDB
+    await VisitaRepository.sincronizarVisitasConMongo();
   }
 
   @override

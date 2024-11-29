@@ -4,46 +4,80 @@
 // import 'package:turismo/src/pages/login/objectbox.g.dart';
 // import 'package:turismo/src/sincronizacion/mongo_service.dart';
 
-// void registrarVisita(String nombreLugar) async {
+// Future<void> registerVisit(Lugar lugar) async {
 //   final store = await ObjectBox.getStore();
 //   final visitaBox = store.box<Visita>();
 
-//   // Buscar visitas por nombre del lugar en ObjectBox
-//   final visitasExistentes =
-//       visitaBox.query(Visita_.nombreLugar.equals(nombreLugar)).build().find();
+//   // Registrar la visita en ObjectBox sin verificar visitas previas
+//   final nuevaVisita = Visita(
+//     nombreLugar: lugar.nombre,
+//     fechaVisita: DateTime.now(),
+//     syncPending: true, // Pendiente de sincronización con MongoDB
+//   );
 
-//   if (visitasExistentes.isEmpty) {
-//     final nuevaVisita = Visita(
-//       nombreLugar: nombreLugar,
-//       fechaVisita: DateTime.now(),
-//       syncPending: true, // Marca como pendiente de sincronización
-//     );
+//   // Guardar la visita en ObjectBox
+//   visitaBox.put(nuevaVisita);
 
-//     // Guardar la visita en ObjectBox
-//     visitaBox.put(nuevaVisita);
+//   // Llamar a la función de sincronización con MongoDB
+//   await sincronizarConMongo();
+// }
 
-//     // Sincronizar con MongoDB después de guardar
-//     sincronizarConMongo();
-//   } else {
-//     print('Visita ya registrada en ObjectBox.');
+// Future<void> sincronizarConMongo() async {
+//   final store = await ObjectBox.getStore();
+//   final visitaBox = store.box<Visita>();
+
+//   // Buscar visitas pendientes de sincronización
+//   final visitasPendientes =
+//       visitaBox.query(Visita_.syncPending.equals(true)).build().find();
+
+//   if (visitasPendientes.isEmpty) {
+//     print('No hay visitas pendientes de sincronizar.');
+//     return;
+//   }
+
+//   try {
+//     for (var visita in visitasPendientes) {
+//       final visitaJson = visita.toJson();
+
+//       // Verificar si la visita ya existe en MongoDB
+//       final existeEnMongo =
+//           await MongoDBService.visitaExisteEnMongo(visitaJson);
+
+//       if (!existeEnMongo) {
+//         final mongoId = await MongoDBService.insertVisita(visitaJson);
+
+//         if (mongoId != null) {
+//           visita.syncPending = false;
+//           visita.mongoId = mongoId;
+
+//           // Actualizar la visita dentro de una transacción
+//           store.runInTransaction(TxMode.write, () {
+//             visitaBox.put(visita);
+//           });
+//         }
+//       } else {
+//         print('La visita ya existe en MongoDB: ${visita.nombreLugar}');
+//       }
+//     }
+//   } catch (e) {
+//     print('Error durante la sincronización: $e');
+//     // Implementar reintentos o manejo adicional si es necesario
 //   }
 // }
 
-// // void sincronizarConMongo() async {
+// // Función para sincronizar las visitas con MongoDB
+// // Future<void> sincronizarConMongo() async {
 // //   final store = await ObjectBox.getStore();
 // //   final visitaBox = store.box<Visita>();
 
-// //   // Buscar las visitas pendientes de sincronización (sin mongoId)
-// //   final visitasPendientes = visitaBox
-// //       .query(Visita_.syncPending.equals(true).and(Visita_.mongoId.isNull()))
-// //       .build()
-// //       .find();
+// //   // Buscar las visitas pendientes de sincronización
+// //   final visitasPendientes =
+// //       visitaBox.query(Visita_.syncPending.equals(true)).build().find();
 
 // //   for (var visita in visitasPendientes) {
-// //     // Convertir la visita a JSON
 // //     final visitaJson = visita.toJson();
 
-// //     // Verificar si la visita ya existe en MongoDB por nombre y fecha
+// //     // Verificar si la visita ya existe en MongoDB
 // //     final existeEnMongo = await MongoDBService.visitaExisteEnMongo(visitaJson);
 
 // //     if (!existeEnMongo) {
@@ -51,130 +85,107 @@
 // //       final mongoId = await MongoDBService.insertVisita(visitaJson);
 
 // //       if (mongoId != null) {
-// //         // Si MongoDB devuelve un _id, actualizamos la visita en ObjectBox
-// //         visita.syncPending = false; // Ya no está pendiente de sincronización
-// //         visita.mongoId = mongoId; // Almacena el _id de MongoDB
+// //         // Marcar la visita como sincronizada y guardar el _id de MongoDB
+// //         visita.syncPending = false;
+// //         visita.mongoId = mongoId;
 
-// //         // Actualizar la visita en ObjectBox con el _id de MongoDB
+// //         // Actualizar la visita en ObjectBox
 // //         visitaBox.put(visita);
 // //       }
 // //     } else {
-// //       print('Visita ya existe en MongoDB, no se sincronizará nuevamente.');
-// //       // Puedes considerar marcar la visita como sincronizada
-// //       // para que no vuelva a intentarse sincronizar en cada carga
-// //       visita.syncPending = false;
-// //       visitaBox.put(visita);
+// //       print('Visita ya existe en MongoDB.');
 // //     }
 // //   }
-// // }
+// //}
 
-// // Función para registrar la visita en ObjectBox
-// // Future<void> RegisterVisit(Lugar lugar) async {
-// //   final store = await ObjectBox.getStore();
-// //   final visitaBox = store.box<Visita>();
-
-// //   // Verificar si la visita ya fue registrada en ObjectBox
-// //   final visitasExistentes =
-// //       visitaBox.query(Visita_.nombreLugar.equals(lugar.nombre)).build().find();
-
-// //   if (visitasExistentes.isEmpty) {
-// //     // Registrar la visita en ObjectBox si no existe
-// //     final nuevaVisita = Visita(
-// //       nombreLugar: lugar.nombre,
-// //       fechaVisita: DateTime.now(),
-// //       syncPending: true, // Pendiente de sincronización con MongoDB
-// //     );
-
-// //     // Guardar la visita en ObjectBox
-// //     visitaBox.put(nuevaVisita);
-
-// //     // Llamar a la función de sincronización con MongoDB
-// //     await sincronizarConMongo();
-// //   } else {
-// //     print('Visita ya registrada en ObjectBox para este lugar.');
-// //   }
-// // }
-
-// // Función para sincronizar las visitas con MongoDB
-// void sincronizarConMongo() async {
-//   final store = await ObjectBox.getStore();
-//   final visitaBox = store.box<Visita>();
-
-//   // Buscar las visitas que ya están sincronizadas (syncPending: false)
-//   final visitasSincronizadas =
-//       visitaBox.query(Visita_.syncPending.equals(false)).build().find();
-
-//   for (var visita in visitasSincronizadas) {
-//     // Convertir la visita a JSON
-//     final visitaJson = visita.toJson();
-
-//     // Verificar si la visita ya existe en MongoDB
-//     final existeEnMongo = await MongoDBService.visitaExisteEnMongo(visitaJson);
-
-//     if (!existeEnMongo) {
-//       // Insertar la visita en MongoDB
-//       await MongoDBService.insertVisita(visitaJson);
-//       print("Visita sincronizada con MongoDB.");
-//     } else {
-//       print('Visita ya existe en MongoDB, no se sincronizará nuevamente.');
-//     }
-//   }
-// }
-
-// Función para registrar la visita en ObjectBox
+import 'package:objectbox/objectbox.dart';
 import 'package:turismo/src/pages/home/modules/categoriaModel/categorias.dart';
 import 'package:turismo/src/pages/home/visitas/datoVistas/visitasDB.dart';
 import 'package:turismo/src/pages/login/entities/objectbox.dart';
 import 'package:turismo/src/pages/login/objectbox.g.dart';
 import 'package:turismo/src/sincronizacion/mongo_service.dart';
 
-Future<void> registerVisit(Lugar lugar) async {
-  final store = await ObjectBox.getStore();
-  final visitaBox = store.box<Visita>();
+class ObjectBoxService {
+  static Future<Box<Visita>> getVisitaBox() async {
+    final store = await ObjectBox.getStore();
+    return store.box<Visita>();
+  }
 
-  // Registrar la visita en ObjectBox sin verificar visitas previas
+  static Future<void> guardarVisita(Visita visita) async {
+    final visitaBox = await getVisitaBox();
+    visitaBox.put(visita);
+  }
+
+  static Future<List<Visita>> obtenerVisitasPendientes() async {
+    final visitaBox = await getVisitaBox();
+    return visitaBox.query(Visita_.syncPending.equals(true)).build().find();
+  }
+
+  static Future<void> actualizarVisita(Visita visita) async {
+    final visitaBox = await getVisitaBox();
+    visitaBox.put(visita);
+  }
+}
+
+class MongoService {
+  static Future<bool> visitaExisteEnMongo(
+      Map<String, dynamic> visitaJson) async {
+    return await MongoDBService.visitaExisteEnMongo(visitaJson);
+  }
+
+  static Future<String?> insertarVisitaEnMongo(
+      Map<String, dynamic> visitaJson) async {
+    return await MongoDBService.insertVisita(visitaJson);
+  }
+}
+
+class VisitaRepository {
+  static Future<void> sincronizarVisitasConMongo() async {
+    final visitasPendientes = await ObjectBoxService.obtenerVisitasPendientes();
+
+    if (visitasPendientes.isEmpty) {
+      print('No hay visitas pendientes de sincronizar.');
+      return;
+    }
+
+    try {
+      for (var visita in visitasPendientes) {
+        final visitaJson = visita.toJson();
+
+        // Verificar si la visita ya existe en MongoDB
+        final existeEnMongo =
+            await MongoService.visitaExisteEnMongo(visitaJson);
+
+        if (!existeEnMongo) {
+          final mongoId = await MongoService.insertarVisitaEnMongo(visitaJson);
+
+          if (mongoId != null) {
+            visita.syncPending = false;
+            visita.mongoId = mongoId;
+
+            // Actualizar en ObjectBox
+            await ObjectBoxService.actualizarVisita(visita);
+          }
+        } else {
+          print('La visita ya existe en MongoDB: ${visita.nombreLugar}');
+        }
+      }
+    } catch (e) {
+      print('Error durante la sincronización: $e');
+    }
+  }
+}
+
+Future<void> registerVisit(Lugar lugar) async {
   final nuevaVisita = Visita(
     nombreLugar: lugar.nombre,
     fechaVisita: DateTime.now(),
-    syncPending: true, // Pendiente de sincronización con MongoDB
+    syncPending: true, // Pendiente de sincronización
   );
 
   // Guardar la visita en ObjectBox
-  visitaBox.put(nuevaVisita);
+  await ObjectBoxService.guardarVisita(nuevaVisita);
 
-  // Llamar a la función de sincronización con MongoDB
-  await sincronizarConMongo();
-}
-
-// Función para sincronizar las visitas con MongoDB
-Future<void> sincronizarConMongo() async {
-  final store = await ObjectBox.getStore();
-  final visitaBox = store.box<Visita>();
-
-  // Buscar las visitas pendientes de sincronización
-  final visitasPendientes =
-      visitaBox.query(Visita_.syncPending.equals(true)).build().find();
-
-  for (var visita in visitasPendientes) {
-    final visitaJson = visita.toJson();
-
-    // Verificar si la visita ya existe en MongoDB
-    final existeEnMongo = await MongoDBService.visitaExisteEnMongo(visitaJson);
-
-    if (!existeEnMongo) {
-      // Insertar la visita en MongoDB y obtener el _id generado
-      final mongoId = await MongoDBService.insertVisita(visitaJson);
-
-      if (mongoId != null) {
-        // Marcar la visita como sincronizada y guardar el _id de MongoDB
-        visita.syncPending = false;
-        visita.mongoId = mongoId;
-
-        // Actualizar la visita en ObjectBox
-        visitaBox.put(visita);
-      }
-    } else {
-      print('Visita ya existe en MongoDB.');
-    }
-  }
+  // Sincronizar con MongoDB
+  await VisitaRepository.sincronizarVisitasConMongo();
 }
